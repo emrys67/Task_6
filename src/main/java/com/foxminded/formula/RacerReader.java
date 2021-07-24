@@ -46,7 +46,7 @@ public class RacerReader {
             while (reader.ready()) {
                 abrv.add(reader.readLine());
             }
-            racers.setAbriviations(abrv);
+            racers.setAbbriviations(abrv);
         } catch (IOException e) {
             e.printStackTrace();
         }

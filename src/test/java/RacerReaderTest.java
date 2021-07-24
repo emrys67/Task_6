@@ -19,7 +19,7 @@ public class RacerReaderTest {
     @Test
     void filesReaded() {
         Racers actual = reader.returnRacers(ABR_PATH, START_PATH, END_PATH);
-        assertTrue(!actual.getAbriviations().isEmpty() && !actual.getStart().isEmpty() &&
+        assertTrue(!actual.getAbbriviations().isEmpty() && !actual.getStart().isEmpty() &&
                 !actual.getEnd().isEmpty());
     }
 }

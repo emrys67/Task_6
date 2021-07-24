@@ -9,7 +9,7 @@ public class Racers {
     private List<Racer> racersList = new ArrayList<>();
     private List<String> start;
     private List<String> end;
-    private List<String> abriviations;
+    private List<String> abbriviations;
 
     public Racer getRacerByAbr(String abr) {
         var racer = racersList.stream()
@@ -38,12 +38,12 @@ public class Racers {
         this.end = end;
     }
 
-    public List<String> getAbriviations() {
-        return abriviations;
+    public List<String> getAbbriviations() {
+        return abbriviations;
     }
 
-    public void setAbriviations(List<String> abriviations) {
-        this.abriviations = abriviations;
+    public void setAbbriviations(List<String> abbriviations) {
+        this.abbriviations = abbriviations;
     }
 
     public List<Racer> getRacersList() {

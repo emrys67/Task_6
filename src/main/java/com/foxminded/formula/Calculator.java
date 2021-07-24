@@ -18,7 +18,7 @@ public class Calculator {
     }
 
     private void fillAbrIn(Racers racers) {
-        racers.getAbriviations().stream()
+        racers.getAbbriviations().stream()
                 .forEach(racer -> racers.addRacer(new Racer(racer.substring(0, racer.indexOf(UNDERSCORE))
                         , racer.substring(racer.indexOf(UNDERSCORE) + 1, racer.indexOf(UNDERSCORE, racer.indexOf(UNDERSCORE) + 1))
                         , racer.substring((racer.indexOf(UNDERSCORE, racer.indexOf(UNDERSCORE) + 1) + 1)))));
