@@ -1,6 +1,7 @@
-import com.foxminded.formula.Calculator;
 import com.foxminded.formula.Formatter;
+import com.foxminded.formula.Parser;
 import com.foxminded.formula.RacerReader;
+import com.foxminded.formula.RacersInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -33,19 +34,24 @@ public class FormatterTest {
                     "19.Kevin Magnussen   | HAAS FERRARI               | 00:01:13.393\n";
     private Formatter formatter;
     private RacerReader racerReader;
-    private Calculator calculator;
+    private Parser parser;
+    private RacersInfo racersInfo;
 
     @BeforeEach
     void setUp() {
+        racersInfo = new RacersInfo();
         racerReader = new RacerReader();
-        calculator = new Calculator();
+        parser = new Parser();
         formatter = new Formatter();
+
     }
 
     @Test
     void shouldReturnRacersString() {
-        String actual = formatter.getRacersFormatted(calculator.fillInRacerInfo(racerReader
-                .returnRacers(ABR_PATH, START_PATH, END_PATH)));
+        racerReader.readFromFile(START_PATH, racersInfo);
+        racerReader.readFromFile(END_PATH, racersInfo);
+        racerReader.readFromFile(ABR_PATH, racersInfo);
+        String actual = formatter.getRacersFormatted(parser.fillInRacerInfo(racersInfo));
         assertEquals(RACERS_FORMATTED, actual);
     }
 }

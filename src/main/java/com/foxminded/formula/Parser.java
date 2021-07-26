@@ -2,45 +2,47 @@ package com.foxminded.formula;
 
 import java.time.LocalTime;
 
-public class Calculator {
-    private final static String UNDERSCORE = "_";
-    private final static String NULL_EXCEPTION = "Null input is not allowed";
+public class Parser {
+    private static final String UNDERSCORE = "_";
+    private static final String NULL_EXCEPTION = "Null input is not allowed";
+    private Racers racers;
 
-    public Racers fillInRacerInfo(Racers racers) {
-        if (racers == null) {
+    public Racers fillInRacerInfo(RacersInfo racersInfo) {
+        if (racersInfo == null) {
             throw new IllegalArgumentException(NULL_EXCEPTION);
         }
-        fillAbrIn(racers);
-        fillStartTimeIn(racers);
-        fillEndTimeIn(racers);
-        fillInBestLap(racers);
+        racers = new Racers();
+        fillAbrIn(racersInfo);
+        fillStartTimeIn(racersInfo);
+        fillEndTimeIn(racersInfo);
+        fillInBestLap();
         return racers;
     }
 
-    private void fillAbrIn(Racers racers) {
-        racers.getAbbriviations().stream()
+    private void fillAbrIn(RacersInfo racersInfo) {
+        racersInfo.getAbbreviations().stream()
                 .forEach(racer -> racers.addRacer(new Racer(racer.substring(0, racer.indexOf(UNDERSCORE))
                         , racer.substring(racer.indexOf(UNDERSCORE) + 1, racer.indexOf(UNDERSCORE, racer.indexOf(UNDERSCORE) + 1))
                         , racer.substring((racer.indexOf(UNDERSCORE, racer.indexOf(UNDERSCORE) + 1) + 1)))));
 
     }
 
-    private void fillStartTimeIn(Racers racers) {
-        racers.getStart().stream()
+    private void fillStartTimeIn(RacersInfo racersInfo) {
+        racersInfo.getStart().stream()
                 .forEach(racer ->
                         racers.getRacerByAbr(racer.substring(0, 3)).setStartTime(LocalTime.parse(racer.substring(
                                 racer.indexOf(UNDERSCORE) + 1))));
 
     }
 
-    private void fillEndTimeIn(Racers racers) {
-        racers.getEnd().stream()
+    private void fillEndTimeIn(RacersInfo racersInfo) {
+        racersInfo.getEnd().stream()
                 .forEach(racer ->
                         racers.getRacerByAbr(racer.substring(0, 3)).setEndTime(LocalTime.parse(racer.substring(
                                 racer.indexOf(UNDERSCORE) + 1))));
     }
 
-    private void fillInBestLap(Racers racers) {
+    private void fillInBestLap() {
         racers.getRacersList().stream()
                 .forEach(racer -> racer.setLapTime(racer.getEndTime().minusNanos(racer.getStartTime().getNano())
                         .minusSeconds(racer.getStartTime().getSecond())

@@ -1,12 +1,13 @@
-import com.foxminded.formula.Calculator;
+import com.foxminded.formula.Parser;
 import com.foxminded.formula.RacerReader;
+import com.foxminded.formula.RacersInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class CalculatorTest {
+public class ParserTest {
     private static final String ABR_PATH = "src/main/resources/abbreviations.txt";
     private static final String START_PATH = "src/main/resources/start.log";
     private static final String END_PATH = "src/main/resources/end.log";
@@ -36,25 +37,30 @@ public class CalculatorTest {
             " lapTime=00:01:13.265}, Racer{abr='LSW', name='Lance Stroll', car='WILLIAMS MERCEDES', startTime=12:06:13.511," +
             " endTime=12:07:26.834, lapTime=00:01:13.323}, Racer{abr='KMH', name='Kevin Magnussen', car='HAAS FERRARI'," +
             " startTime=12:02:51.003, endTime=12:04:04.396, lapTime=00:01:13.393}]}";
-    private Calculator calculator;
+    private Parser parser;
     private RacerReader reader;
+    private RacersInfo racersInfo;
 
     @BeforeEach
     void setUp() {
-        calculator = new Calculator();
+        racersInfo = new RacersInfo();
+        parser = new Parser();
         reader = new RacerReader();
     }
 
     @Test
     void returnFilledRacers() {
-        String actual = calculator.fillInRacerInfo(reader.returnRacers(ABR_PATH, START_PATH, END_PATH)).toString();
+        reader.readFromFile(START_PATH, racersInfo);
+        reader.readFromFile(END_PATH, racersInfo);
+        reader.readFromFile(ABR_PATH, racersInfo);
+        String actual = parser.fillInRacerInfo(racersInfo).toString();
         assertEquals(EXPECTED_RACERS_LIST, actual);
     }
 
     @Test
     void fillInNull() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            calculator.fillInRacerInfo(null);
+            parser.fillInRacerInfo(null);
         });
         String actual = exception.getMessage();
         assertEquals(NULL_EXCEPTION, actual);

@@ -3,50 +3,31 @@ package com.foxminded.formula;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class RacerReader {
-    private final List<String> start = new ArrayList<>();
-    private final List<String> end = new ArrayList<>();
-    private final List<String> abrv = new ArrayList<>();
-    private final Racers racers = new Racers();
+public class RacerReader implements RacerReaderInterface {
+    private static final String START_LOG = "start";
+    private static final String END_LOG = "end";
+    private static final String ABR_LOG = "abbreviations";
+    private static final String ARG_EXCEPTION = "It is not a log file";
 
-    public Racers returnRacers(String abr, String start, String end) {
-        readStart(start);
-        readEnd(end);
-        readAbr(abr);
-        return racers;
-    }
-
-    private void readStart(String pathString) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(pathString))) {
-            while (reader.ready()) {
-                start.add(reader.readLine());
-            }
-            racers.setStart(start);
-        } catch (IOException e) {
-            e.printStackTrace();
+    public void readFromFile(String filepath, RacersInfo racersInfo) {
+        if (filepath.contains(START_LOG)) {
+            readLinesFormFile(filepath, racersInfo.getStart());
+        } else if (filepath.contains(END_LOG)) {
+            readLinesFormFile(filepath, racersInfo.getEnd());
+        } else if (filepath.contains(ABR_LOG)) {
+            readLinesFormFile(filepath, racersInfo.getAbbreviations());
+        } else {
+            throw new IllegalArgumentException(ARG_EXCEPTION);
         }
     }
 
-    private void readEnd(String pathString) {
+    private void readLinesFormFile(String pathString, List<String> list) {
         try (BufferedReader reader = new BufferedReader(new FileReader(pathString))) {
             while (reader.ready()) {
-                end.add(reader.readLine());
+                list.add(reader.readLine());
             }
-            racers.setEnd(end);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void readAbr(String pathString) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(pathString))) {
-            while (reader.ready()) {
-                abrv.add(reader.readLine());
-            }
-            racers.setAbbriviations(abrv);
         } catch (IOException e) {
             e.printStackTrace();
         }

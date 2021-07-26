@@ -7,7 +7,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Formatter {
+public class Formatter implements FormatterInterface {
     private static final String SPACE = " ";
     private static final String VERTICAL_BAR = "|";
     private static final String NEW_LINE = "\n";
