@@ -28,12 +28,13 @@ public class RacerReaderTest {
         assertTrue(!racersInfo.getAbbreviations().isEmpty() && !racersInfo.getStart().isEmpty() &&
                 !racersInfo.getEnd().isEmpty());
     }
+
     @Test
-    void readWrongLog(){
+    void readWrongLog() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             reader.readFromFile(WORNG_PATH, racersInfo);
         });
         String actual = exception.getMessage();
-        assertEquals(ARG_EXCEPTION,actual);
+        assertEquals(ARG_EXCEPTION, actual);
     }
 }
