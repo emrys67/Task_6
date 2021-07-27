@@ -1,4 +1,4 @@
-package com.foxminded.formula;
+package com.foxminded.formula.models;
 
 import java.util.ArrayList;
 import java.util.List;

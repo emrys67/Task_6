@@ -1,5 +1,7 @@
-package com.foxminded.formula;
+package com.foxminded.formula.format;
 
+import com.foxminded.formula.models.Racer;
+import com.foxminded.formula.models.Racers;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
@@ -7,7 +9,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Formatter implements FormatterInterface {
+public class TopRacersFormatter implements Formatter {
     private static final String SPACE = " ";
     private static final String VERTICAL_BAR = "|";
     private static final String NEW_LINE = "\n";

@@ -1,17 +1,19 @@
-package com.foxminded.formula;
+package com.foxminded.formula.reader;
+
+import com.foxminded.formula.models.RacersInfo;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
 
-public class RacerReader implements RacerReaderInterface {
+public class RacerReader implements Reader {
     private static final String START_LOG = "start";
     private static final String END_LOG = "end";
     private static final String ABR_LOG = "abbreviations";
     private static final String ARG_EXCEPTION = "It is not a log file";
 
-    public void readFromFile(String filepath, RacersInfo racersInfo) {
+    public RacersInfo readFromFile(String filepath, RacersInfo racersInfo) {
         if (filepath.contains(START_LOG)) {
             readLinesFormFile(filepath, racersInfo.getStart());
         } else if (filepath.contains(END_LOG)) {
@@ -21,6 +23,7 @@ public class RacerReader implements RacerReaderInterface {
         } else {
             throw new IllegalArgumentException(ARG_EXCEPTION);
         }
+        return racersInfo;
     }
 
     private void readLinesFormFile(String pathString, List<String> list) {

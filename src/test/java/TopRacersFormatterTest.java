@@ -1,13 +1,14 @@
-import com.foxminded.formula.Formatter;
-import com.foxminded.formula.Parser;
-import com.foxminded.formula.RacerReader;
-import com.foxminded.formula.RacersInfo;
+import com.foxminded.formula.format.TopRacersFormatter;
+import com.foxminded.formula.models.Racers;
+import com.foxminded.formula.models.RacersInfo;
+import com.foxminded.formula.parser.Parser;
+import com.foxminded.formula.reader.RacerReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FormatterTest {
+public class TopRacersFormatterTest {
     private static final String ABR_PATH = "src/main/resources/abbreviations.txt";
     private static final String START_PATH = "src/main/resources/start.log";
     private static final String END_PATH = "src/main/resources/end.log";
@@ -32,17 +33,19 @@ public class FormatterTest {
                     "17.Marcus Ericsson   | SAUBER FERRARI             | 00:01:13.265\n" +
                     "18.Lance Stroll      | WILLIAMS MERCEDES          | 00:01:13.323\n" +
                     "19.Kevin Magnussen   | HAAS FERRARI               | 00:01:13.393\n";
-    private Formatter formatter;
+    private TopRacersFormatter topRacersFormatter;
     private RacerReader racerReader;
     private Parser parser;
     private RacersInfo racersInfo;
+    private Racers racers;
 
     @BeforeEach
     void setUp() {
         racersInfo = new RacersInfo();
         racerReader = new RacerReader();
         parser = new Parser();
-        formatter = new Formatter();
+        topRacersFormatter = new TopRacersFormatter();
+        racers = new Racers();
 
     }
 
@@ -51,7 +54,7 @@ public class FormatterTest {
         racerReader.readFromFile(START_PATH, racersInfo);
         racerReader.readFromFile(END_PATH, racersInfo);
         racerReader.readFromFile(ABR_PATH, racersInfo);
-        String actual = formatter.getRacersFormatted(parser.fillInRacerInfo(racersInfo));
+        String actual = topRacersFormatter.getRacersFormatted(parser.fillInRacerInfo(racersInfo,racers));
         assertEquals(RACERS_FORMATTED, actual);
     }
 }

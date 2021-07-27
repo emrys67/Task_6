@@ -1,6 +1,7 @@
-import com.foxminded.formula.Parser;
-import com.foxminded.formula.RacerReader;
-import com.foxminded.formula.RacersInfo;
+import com.foxminded.formula.parser.Parser;
+import com.foxminded.formula.reader.RacerReader;
+import com.foxminded.formula.models.Racers;
+import com.foxminded.formula.models.RacersInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -40,12 +41,14 @@ public class ParserTest {
     private Parser parser;
     private RacerReader reader;
     private RacersInfo racersInfo;
+    private Racers racers;
 
     @BeforeEach
     void setUp() {
         racersInfo = new RacersInfo();
         parser = new Parser();
         reader = new RacerReader();
+        racers = new Racers();
     }
 
     @Test
@@ -53,14 +56,14 @@ public class ParserTest {
         reader.readFromFile(START_PATH, racersInfo);
         reader.readFromFile(END_PATH, racersInfo);
         reader.readFromFile(ABR_PATH, racersInfo);
-        String actual = parser.fillInRacerInfo(racersInfo).toString();
+        String actual = parser.fillInRacerInfo(racersInfo,racers).toString();
         assertEquals(EXPECTED_RACERS_LIST, actual);
     }
 
     @Test
     void fillInNull() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            parser.fillInRacerInfo(null);
+            parser.fillInRacerInfo(null, racers);
         });
         String actual = exception.getMessage();
         assertEquals(NULL_EXCEPTION, actual);

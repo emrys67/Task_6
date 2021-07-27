@@ -1,4 +1,4 @@
-package com.foxminded.formula;
+package com.foxminded.formula.models;
 
 import java.time.LocalTime;
 import java.util.Objects;

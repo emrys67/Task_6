@@ -1,5 +1,5 @@
-import com.foxminded.formula.RacerReader;
-import com.foxminded.formula.RacersInfo;
+import com.foxminded.formula.reader.RacerReader;
+import com.foxminded.formula.models.RacersInfo;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
