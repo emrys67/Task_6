@@ -1,17 +1,21 @@
 import com.foxminded.formula.format.TopRacersFormatter;
-import com.foxminded.formula.models.Racers;
+import com.foxminded.formula.models.Racer;
 import com.foxminded.formula.models.RacersInfo;
 import com.foxminded.formula.parser.Parser;
 import com.foxminded.formula.reader.RacerReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TopRacersFormatterTest {
     private static final String ABR_PATH = "src/main/resources/abbreviations.txt";
     private static final String START_PATH = "src/main/resources/start.log";
     private static final String END_PATH = "src/main/resources/end.log";
+    private static final String NULL_EXCEPTION = "Null input is not allowed";
     private static final String RACERS_FORMATTED =
             "1.Sebastian Vettel   | FERRARI                    | 00:01:04.415\n" +
                     "2.Daniel Ricciardo   | RED BULL RACING TAG HEUER  | 00:01:12.013\n" +
@@ -37,7 +41,7 @@ public class TopRacersFormatterTest {
     private RacerReader racerReader;
     private Parser parser;
     private RacersInfo racersInfo;
-    private Racers racers;
+    private List<Racer> racersList;
 
     @BeforeEach
     void setUp() {
@@ -45,8 +49,6 @@ public class TopRacersFormatterTest {
         racerReader = new RacerReader();
         parser = new Parser();
         topRacersFormatter = new TopRacersFormatter();
-        racers = new Racers();
-
     }
 
     @Test
@@ -54,7 +56,55 @@ public class TopRacersFormatterTest {
         racerReader.readFromFile(START_PATH, racersInfo);
         racerReader.readFromFile(END_PATH, racersInfo);
         racerReader.readFromFile(ABR_PATH, racersInfo);
-        String actual = topRacersFormatter.getRacersFormatted(parser.fillInRacerInfo(racersInfo,racers));
+        String actual = topRacersFormatter.getRacersFormatted(parser.fillInRacerInfo(racersInfo));
         assertEquals(RACERS_FORMATTED, actual);
+    }
+    @Test
+    void nullInput(){
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            topRacersFormatter.getRacersFormatted(null);
+        });
+        String actual = exception.getMessage();
+        assertEquals(NULL_EXCEPTION,actual);
+    }
+
+    @Test
+    void nullStart(){
+        racerReader.readFromFile(START_PATH, racersInfo);
+        racerReader.readFromFile(END_PATH, racersInfo);
+        racerReader.readFromFile(ABR_PATH, racersInfo);
+        racersList = parser.fillInRacerInfo(racersInfo);
+        racersList.get(0).setStartTime(null);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            topRacersFormatter.getRacersFormatted(racersList);
+        });
+        String actual = exception.getMessage();
+        assertEquals(NULL_EXCEPTION,actual);
+    }
+    @Test
+    void nullEnd(){
+        racerReader.readFromFile(START_PATH, racersInfo);
+        racerReader.readFromFile(END_PATH, racersInfo);
+        racerReader.readFromFile(ABR_PATH, racersInfo);
+        racersList = parser.fillInRacerInfo(racersInfo);
+        racersList.get(0).setEndTime(null);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            topRacersFormatter.getRacersFormatted(racersList);
+        });
+        String actual = exception.getMessage();
+        assertEquals(NULL_EXCEPTION,actual);
+    }
+    @Test
+    void nullAbr(){
+        racerReader.readFromFile(START_PATH, racersInfo);
+        racerReader.readFromFile(END_PATH, racersInfo);
+        racerReader.readFromFile(ABR_PATH, racersInfo);
+        racersList = parser.fillInRacerInfo(racersInfo);
+        racersList.get(0).setAbr(null);
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            topRacersFormatter.getRacersFormatted(racersList);
+        });
+        String actual = exception.getMessage();
+        assertEquals(NULL_EXCEPTION,actual);
     }
 }

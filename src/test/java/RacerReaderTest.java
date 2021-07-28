@@ -1,5 +1,5 @@
-import com.foxminded.formula.reader.RacerReader;
 import com.foxminded.formula.models.RacersInfo;
+import com.foxminded.formula.reader.RacerReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +10,9 @@ public class RacerReaderTest {
     private static final String START_PATH = "src/main/resources/start.log";
     private static final String END_PATH = "src/main/resources/end.log";
     private static final String WORNG_PATH = "src/main/resources/onion.txt";
+    private static final String WRONG_LOG = "src/main/resources/wrong.log";
     private static final String ARG_EXCEPTION = "It is not a log file";
+    private static final String PATH_EXCEPTION = "Path is wrong";
     private RacerReader reader;
     private RacersInfo racersInfo;
 
@@ -32,9 +34,19 @@ public class RacerReaderTest {
     @Test
     void readWrongLog() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            reader.readFromFile(WORNG_PATH, racersInfo);
+            reader.readFromFile(WRONG_LOG, racersInfo);
         });
         String actual = exception.getMessage();
         assertEquals(ARG_EXCEPTION, actual);
     }
+
+    @Test
+    void readWrong() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            reader.readFromFile(WORNG_PATH, racersInfo);
+        });
+        String actual = exception.getMessage();
+        assertEquals(PATH_EXCEPTION, actual);
+    }
+
 }
