@@ -41,7 +41,7 @@ public class RacerReaderTest {
     }
 
     @Test
-    void readWrong() {
+    void readWrongPath() {
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             reader.readFromFile(WORNG_PATH, racersInfo);
         });
